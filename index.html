@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f4f0e8">
 
-  <title>KFC｜T997 車輛管理</title>
+  <title>KFC｜車輛管理</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -89,12 +89,6 @@
       font-weight: 900;
     }
 
-    .date {
-      margin-top: 10px;
-      color: var(--gray);
-      font-size: 14px;
-    }
-
     .intro {
       padding: 32px 20px 16px;
     }
@@ -117,41 +111,31 @@
 
     .mode-menu {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       padding: 10px 16px 0;
     }
 
     .mode-btn {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 22px;
-      width: 100%;
-      min-height: 92px;
-      padding: 18px 26px;
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 22px;
       background: var(--paper);
+      min-height: 150px;
       cursor: pointer;
-      text-align: left;
       box-shadow: 0 3px 12px rgba(0,0,0,.035);
     }
 
     .mode-btn .icon {
       display: block;
-      flex: 0 0 48px;
-      font-size: 38px;
-      line-height: 1;
-      margin: 0;
-      text-align: center;
+      font-size: 42px;
+      margin-bottom: 12px;
     }
 
     .mode-btn .main {
       display: block;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
-      margin: 0;
+      margin-bottom: 6px;
     }
 
     .mode-btn .sub {
@@ -575,12 +559,12 @@
 
 
     .mode-menu {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .mode-btn {
-      min-height: 92px;
-      padding: 18px 26px;
+      padding: 18px 10px;
+      min-height: 170px;
     }
 
     .battery-page .card,
@@ -703,33 +687,9 @@
 
   
 
-    /* 入口改為可持續新增的長條型按鈕 */
-    .mode-menu {
-      grid-template-columns: 1fr;
-    }
-
-    .mode-btn {
-      min-height: 92px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 16px 20px;
-      text-align: center;
-    }
-
-    .mode-btn .icon {
-      display: inline;
-      margin: 0;
-      font-size: 34px;
-    }
-
-    .mode-btn .main {
-      margin: 0;
-      font-size: 23px;
-      text-align: center;
-    }
+/* 前後台標題字體統一 */
+.title{font-size:30px;line-height:1.2}
+@media(max-width:700px){.title{font-size:26px}}
 
   </style>
 </head>
@@ -745,8 +705,6 @@
       <h1 id="pageTitle" class="title">車輛管理</h1>
       <div class="kfc">KFC</div>
     </div>
-
-    <div id="todayDate" class="date"></div>
   </header>
 
   <section class="intro">
@@ -1366,10 +1324,10 @@
    ===================================================== */
 
 const SUPABASE_URL =
-  "https://qhztjliketfujfiwemxh.supabase.co";
+  "https://nurnboqwhctyswcufkyk.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_NsppV94lE_RbaTp-zT6Tgw_fp5EyuCQ";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51cm5ib3F3aGN0eXN3Y3Vma3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5MjE5MjMsImV4cCI6MjEwNTQ5NzkyM30.-OYo96FZ3Yz3tCsKDG0KqhUgQuxXUAGPHbtDXcd0yB8";
 
 const db =
   supabase.createClient(
@@ -2155,14 +2113,6 @@ async function saveInspection() {
       vehicle_id: currentVehicle.id,
       mileage,
       engine_start: checkState.engine_start.status,
-      // 舊欄位為 NOT NULL：以新版結果做相容性保存
-      // oil_light 對應新版「引擎發動」；brake 為前後剎車整合結果
-      oil_light: checkState.engine_start.status,
-      brake: (
-        checkState.front_brake.status === "normal" &&
-        checkState.rear_brake.status === "normal"
-      ) ? "normal" : "abnormal",
-
       // 沿用既有欄位：front_tire／rear_tire 代表新版胎紋判定
       front_tire: checkState.front_tread.status,
       front_tire_pressure: checkState.front_tire_pressure.status,
@@ -2353,18 +2303,10 @@ const pageTitle =
     "pageTitle"
   );
 
-const todayDate =
-  document.getElementById(
-    "todayDate"
-  );
-
 const introTitle =
   document.getElementById(
     "introTitle"
   );
-
-const introSection =
-  introTitle.closest(".intro");
 
 const introText =
   document.getElementById(
@@ -3223,7 +3165,6 @@ function showMode(mode) {
   batteryPage.style.display = mode === "battery" ? "block" : "none";
   surveyPage.style.display = mode === "survey" ? "block" : "none";
 
-  introSection.style.display = "block";
   introText.classList.add("show");
 
   if (mode === "claim") {
@@ -3273,9 +3214,8 @@ function showHome() {
   surveySuccess.classList.remove("show");
 
   pageTitle.textContent = "車輛管理";
-  introTitle.textContent = "";
+  introTitle.textContent = "領車・還車・安全回饋";
   introText.textContent = "";
-  introSection.style.display = "none";
   introText.classList.remove("show");
 
   resetClaimForm();
@@ -3446,16 +3386,6 @@ cleanupOldClaimRecords();
 /* =====================================================
    INITIAL
    ===================================================== */
-
-todayDate.textContent = new Date().toLocaleDateString(
-  "zh-TW",
-  {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long"
-  }
-);
 
 showHome();
 
