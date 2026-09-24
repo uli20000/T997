@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f4f0e8">
-<title>KFC｜T997 巡檢後台</title>
+<title>KFC｜台北-T997 巡檢後台</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -765,6 +765,19 @@ button{cursor:pointer}
 .title{font-size:30px;line-height:1.2}
 @media(max-width:700px){.title{font-size:26px}}
 
+
+
+/* 三行標題：城市-Rider Center／KFC／日期 */
+.header-row,
+.title-row{
+  flex-direction:column;
+  gap:4px;
+}
+.title{font-size:30px;line-height:1.2}
+.kfc{font-size:26px}
+.date{margin-top:4px;font-size:14px}
+@media(max-width:700px){.title{font-size:26px}}
+
 </style>
 </head>
 
@@ -776,7 +789,7 @@ button{cursor:pointer}
   <div class="eyebrow">KFC DELIVERY CENTER</div>
 
   <div class="title-row">
-    <h1 class="title">巡檢後台</h1>
+    <h1 id="adminTitle" class="title">台北-Rider Center</h1>
     <div class="kfc">KFC</div>
   </div>
 
@@ -1057,6 +1070,7 @@ const exportMonth =
 const exportExcelBtn =
   $("exportExcelBtn");
 
+const adminTitle = $("adminTitle");
 const adminModeMenu = $("adminModeMenu");
 const vehicleModePage = $("vehicleModePage");
 const surveyModePage = $("surveyModePage");
